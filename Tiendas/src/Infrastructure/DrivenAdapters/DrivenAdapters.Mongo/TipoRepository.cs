@@ -38,8 +38,7 @@ namespace DrivenAdapters.Mongo
             TipoEntity tipoEntity =
                 await _coleccionTipos.Find(filterTipo).FirstOrDefaultAsync();
 
-            return tipoEntity.AsEntity();
-
+            return tipoEntity?.AsEntity();
         }
     }
 }

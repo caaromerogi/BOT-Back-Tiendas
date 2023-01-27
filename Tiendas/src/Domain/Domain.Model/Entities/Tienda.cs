@@ -15,60 +15,40 @@ namespace Domain.Model.Entities
         /// <summary>
         /// Valor Nombre
         /// </summary>
-        public string Nombre { get; set; }
+        public string Nombre { get; private set; }
 
         /// <summary>
         /// Tipo
         /// </summary>
-        public Tipo Tipo { get; set; }
+        public Tipo Tipo { get; private set; }
 
         /// <summary>
         /// Dirección
         /// </summary>
-        public string Direccion { get; set; }
+        public string Direccion { get; private set; }
 
         /// <summary>
         /// Ubicación
         /// </summary>
-        public Ubicacion Ubicacion { get; set; }
+        public Ubicacion Ubicacion { get; private set; }
 
         /// <summary>
         /// Valor Numero del Celular
         /// </summary>
-        public string Celular { get; set; }
+        public string Celular { get; private set; }
 
         /// <summary>
         /// Valor de el Correo
         /// </summary>
-        public string Correo { get; set; }
+        public string Correo { get; private set; }
 
         /// <summary>
         /// Valor Fecha Creación
         /// </summary>
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; private set; }
 
         /// <summary>
         /// Constructor
-        /// </summary>
-        /// <param name="nombre"></param>
-        /// <param name="tipo"></param>
-        /// <param name="direccion"></param>
-        /// <param name="ubicacion"></param>
-        /// <param name="celular"></param>
-        /// <param name="correo"></param>
-        public Tienda(string nombre, Tipo tipo, string direccion, Ubicacion ubicacion, string celular, string correo)
-        {
-            Nombre = nombre;
-            Tipo = tipo;
-            Direccion = direccion;
-            Ubicacion = ubicacion;
-            Celular = celular;
-            Correo = correo;
-            FechaCreacion = DateTime.Now;
-        }
-
-        /// <summary>
-        ///
         /// </summary>
         /// <param name="nombre"></param>
         /// <param name="direccion"></param>
@@ -89,7 +69,7 @@ namespace Domain.Model.Entities
         }
 
         /// <summary>
-        ///
+        /// Constructor
         /// </summary>
         /// <param name="id"></param>
         /// <param name="nombre"></param>
@@ -99,7 +79,8 @@ namespace Domain.Model.Entities
         /// <param name="celular"></param>
         /// <param name="correo"></param>
         /// <param name="fechaCreacion"></param>
-        public Tienda(string id, string nombre, Tipo tipo, string direccion, Ubicacion ubicacion, string celular, string correo, DateTime fechaCreacion)
+        public Tienda(string id, string nombre, Tipo tipo, string direccion, Ubicacion ubicacion, string celular,
+            string correo, DateTime fechaCreacion)
         {
             Id = id;
             Nombre = nombre;
@@ -115,9 +96,6 @@ namespace Domain.Model.Entities
         /// Establecer tipo de tienda.
         /// </summary>
         /// <param name="tipo"></param>
-        public void EstablecerNombreTipo(Tipo tipo)
-        {
-            Tipo = tipo;
-        }
+        public void EstablecerNombreTipo(Tipo tipo) => Tipo = tipo;
     }
 }
