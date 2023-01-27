@@ -13,6 +13,7 @@ namespace Tiendas.AppServices.Automapper
         /// </summary>
         public ConfigurationProfile()
         {
+
         }
     }
 }

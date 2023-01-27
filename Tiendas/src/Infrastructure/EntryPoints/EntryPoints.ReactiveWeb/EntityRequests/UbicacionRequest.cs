@@ -1,6 +1,6 @@
 ﻿using Domain.Model.Entities;
 
-namespace Domain.Model.EntityRequests
+namespace EntryPoints.ReactiveWeb.Entity
 {
     /// <summary>
     /// Ubicación

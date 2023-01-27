@@ -1,5 +1,4 @@
 ﻿using Domain.Model.Entities;
-using Domain.Model.EntityRequests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -19,8 +18,8 @@ namespace Domain.UseCase.Tiendas
         /// <summary>
         /// Crear tienda
         /// </summary>
-        /// <param name="tiendaRequest"></param>
+        /// <param name="tienda"></param>
         /// <returns></returns>
-        Task<Tienda> CrearTienda(TiendaRequest tiendaRequest);
+        Task<Tienda> CrearTienda(Tienda tienda);
     }
 }

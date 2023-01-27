@@ -17,6 +17,15 @@
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="id"></param>
+        public Tipo(int id)
+        {
+            Id = id;
+        }
+
+        /// <summary>
         /// Id
         /// </summary>
         public int Id { get; private set; }

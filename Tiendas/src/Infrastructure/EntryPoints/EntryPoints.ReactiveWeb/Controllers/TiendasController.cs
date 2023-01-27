@@ -1,8 +1,8 @@
 using Domain.Model.Entities;
-using Domain.Model.EntityRequests;
 using Domain.UseCase.Common;
 using Domain.UseCase.Tiendas;
 using EntryPoints.ReactiveWeb.Base;
+using EntryPoints.ReactiveWeb.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -41,7 +41,8 @@ namespace EntryPoints.ReactiveWeb.Controllers
                 await HandleRequestAsync(
                     async () =>
                     {
-                        return await _tiendaUseCase.CrearTienda(tiendaRequest);
+                        Tienda nuevaTienda = tiendaRequest.AsEntity();
+                        return await _tiendaUseCase.CrearTienda(nuevaTienda);
                     }, "");
 
         /// <summary>

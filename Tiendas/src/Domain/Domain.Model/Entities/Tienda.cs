@@ -75,13 +75,16 @@ namespace Domain.Model.Entities
         /// <param name="ubicacion"></param>
         /// <param name="celular"></param>
         /// <param name="correo"></param>
-        public Tienda(string nombre, string direccion, Ubicacion ubicacion, string celular, string correo)
+        /// <param name="tipoId"></param>
+        public Tienda(string nombre, int tipoId, string direccion, Ubicacion ubicacion,
+            string celular, string correo)
         {
             Nombre = nombre;
             Direccion = direccion;
             Ubicacion = ubicacion;
             Celular = celular;
             Correo = correo;
+            Tipo = new Tipo(tipoId);
             FechaCreacion = DateTime.Now;
         }
 

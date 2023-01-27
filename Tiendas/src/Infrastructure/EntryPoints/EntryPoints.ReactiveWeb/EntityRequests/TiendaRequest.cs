@@ -1,6 +1,6 @@
 ﻿using Domain.Model.Entities;
 
-namespace Domain.Model.EntityRequests
+namespace EntryPoints.ReactiveWeb.Entity
 {
     /// <summary>
     /// Almacén request DTO
@@ -42,6 +42,6 @@ namespace Domain.Model.EntityRequests
         /// </summary>
         /// <returns></returns>
         public Tienda AsEntity() =>
-            new(Nombre, Direccion, Ubicacion.AsEntity(), Celular, Correo);
+            new(Nombre, TipoId, Direccion, Ubicacion.AsEntity(), Celular, Correo);
     }
 }

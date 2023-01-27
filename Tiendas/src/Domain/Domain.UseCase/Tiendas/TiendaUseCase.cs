@@ -1,6 +1,5 @@
 ﻿using Domain.Model.Entities;
 using Domain.Model.Entities.Gateway;
-using Domain.Model.EntityRequests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,19 +26,17 @@ namespace Domain.UseCase.Tiendas
         }
 
         /// <summary>
-        /// <see cref="ITiendaUseCase.CrearTienda(TiendaRequest)"/>
+        /// <see cref="ITiendaUseCase.CrearTienda(Tienda)"/>
         /// </summary>
-        /// <param name="tiendaRequest"></param>
+        /// <param name="tienda"></param>
         /// <returns></returns>
-        public async Task<Tienda> CrearTienda(TiendaRequest tiendaRequest)
+        public async Task<Tienda> CrearTienda(Tienda tienda)
         {
-            Tienda nuevaTienda = tiendaRequest.AsEntity();
+            Tipo tipo = await _tipoRepository.ObtenerTipoPorIdAsync(tienda.Tipo.Id);
 
-            Tipo tipo = await _tipoRepository.ObtenerTipoPorIdAsync(tiendaRequest.TipoId);
+            tienda.EstablecerNombreTipo(tipo);
 
-            nuevaTienda.EstablecerNombreTipo(tipo);
-
-            return await _tiendaRepository.InsertarAlmacenAsync(nuevaTienda);
+            return await _tiendaRepository.InsertarAlmacenAsync(tienda);
         }
 
         /// <summary>
