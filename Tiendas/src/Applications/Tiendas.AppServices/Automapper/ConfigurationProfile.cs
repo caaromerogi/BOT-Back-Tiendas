@@ -13,8 +13,6 @@ namespace Tiendas.AppServices.Automapper
         /// </summary>
         public ConfigurationProfile()
         {
-            CreateMap<Entity, DrivenAdapters.Mongo.Entities.Entity>();
-            CreateMap<DrivenAdapters.Mongo.Entities.Entity, Entity>();
         }
     }
 }

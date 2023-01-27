@@ -1,15 +1,14 @@
 ﻿using AutoMapper.Data;
 using credinet.comun.api;
 using Domain.Model.Entities.Gateway;
-using Domain.Model.Interfaces;
 using Domain.UseCase.Common;
-using DrivenAdapter.Files;
+using Domain.UseCase.Tiendas;
 using DrivenAdapters.Mongo;
 using DrivenAdapters.Mongo.Entities;
 using Microsoft.Extensions.DependencyInjection;
-using Tiendas.AppServices.Automapper;
 using StackExchange.Redis;
 using System;
+using Tiendas.AppServices.Automapper;
 
 namespace Tiendas.AppServices.Extensions
 {
@@ -54,21 +53,6 @@ namespace Tiendas.AppServices.Extensions
                                     services.AddSingleton<IContext>(provider => new Context(connectionString, db));
 
         /// <summary>
-        /// Registro del blobstorage
-        /// </summary>
-        /// <param name="services">Contenedor de servicios</param>
-        /// <param name="connectionString">cadena de conexion del storage</param>
-        /// <param name="containerName">nombre del contenedor del storage</param>
-        /// <returns></returns>
-        public static IServiceCollection RegisterBlobstorage(this IServiceCollection services, string connectionString, string containerName)
-        {
-            //Blob storage
-            //TODO: Buscar si existe mejor implementacion de la DI
-            services.AddSingleton<IBlobStorage>(provider => new BlobStorage(containerName, connectionString));
-            return services;
-        }
-
-        /// <summary>
         ///   Método para registrar Redis Cache
         /// </summary>
         /// <param name="services">services.</param>
@@ -101,12 +85,14 @@ namespace Tiendas.AppServices.Extensions
 
             #region Adaptadores
 
-            services.AddScoped<ITestEntityRepository, EntityAdapter>();
+            services.AddScoped<ITiendaRepository, TiendaRepository>();
+            services.AddScoped<ITipoRepository, TipoRepository>();
 
             #endregion Adaptadores
 
             #region UseCases
 
+            services.AddScoped<ITiendaUseCase, TiendaUseCase>();
             services.AddScoped<IManageEventsUseCase, ManageEventsUseCase>();
 
             #endregion UseCases

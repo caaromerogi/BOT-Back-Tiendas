@@ -1,6 +1,6 @@
 ﻿using credinet.comun.api;
 using credinet.exception.middleware.models;
-using Domain.Model.Interfaces;
+using Domain.UseCase.Common;
 using Helpers.Commons.Exceptions;
 using Helpers.ObjectsUtils.Extensions;
 using Helpers.ObjectsUtils.ResponseObjects;
@@ -41,7 +41,7 @@ namespace EntryPoints.ReactiveWeb.Base
         /// <param name="requestHandler"></param>
         /// <param name="logId"></param>
         /// <returns></returns>
-        public async Task<IActionResult> HandleRequest<TResult>(Func<Task<TResult>> requestHandler, string logId)
+        public async Task<IActionResult> HandleRequestAsync<TResult>(Func<Task<TResult>> requestHandler, string logId)
         {
             string actionName = ControllerContext.RouteData.Values["action"].ToString();
             string controllerName = ControllerContext.RouteData.Values["controller"].ToString();

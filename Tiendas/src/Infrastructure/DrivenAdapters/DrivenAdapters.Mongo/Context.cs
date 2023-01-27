@@ -24,8 +24,13 @@ namespace DrivenAdapters.Mongo
         }
 
         /// <summary>
-        /// Tipo Contrato Entity
+        /// <see cref="IContext.Tiendas"/>
         /// </summary>
-        public IMongoCollection<Entity> TipoContrato => _database.GetCollection<Entity>("TipoContrato");
+        public IMongoCollection<TiendaEntity> Tiendas => _database.GetCollection<TiendaEntity>("Tiendas");
+
+        /// <summary>
+        /// <see cref="IContext.Tipos"/>
+        /// </summary>
+        public IMongoCollection<TipoEntity> Tipos => _database.GetCollection<TipoEntity>("TiposTienda");
     }
 }
