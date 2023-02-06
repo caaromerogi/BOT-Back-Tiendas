@@ -16,4 +16,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Domain\Domain.UseCase\Domain.UseCase.csproj" />
+    <ProjectReference Include="..\Domain.Model.Tests\Domain.Model.Tests.csproj" />
+  </ItemGroup>
+
 </Project>
