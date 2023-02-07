@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Domain.UseCase.Common
     /// <summary>
     /// Manage Events UseCase
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ManageEventsUseCase : IManageEventsUseCase
     {
         private readonly ILogger<ManageEventsUseCase> _logger;

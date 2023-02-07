@@ -19,6 +19,6 @@ namespace Domain.Model.Entities.Gateway
         /// </summary>
         /// <param name="crearAlmacen"></param>
         /// <returns></returns>
-        Task<Tienda> InsertarAlmacenAsync(Tienda crearAlmacen);
+        Task<Tienda> InsertarTiendaAsync(Tienda crearAlmacen);
     }
 }

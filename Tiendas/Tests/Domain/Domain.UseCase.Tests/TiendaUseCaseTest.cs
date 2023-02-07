@@ -1,7 +1,9 @@
-﻿using Domain.Model.Entities;
+﻿using credinet.exception.middleware.models;
+using Domain.Model.Entities;
 using Domain.Model.Entities.Gateway;
 using Domain.Model.Tests;
 using Domain.UseCase.Tiendas;
+using Helpers.Commons.Exceptions;
 using Moq;
 using Xunit;
 
@@ -68,7 +70,7 @@ namespace Domain.UseCase.Tests
                 .Build();
 
             _mockTiendaRepository
-                .Setup(repository => repository.InsertarAlmacenAsync(It.IsAny<Tienda>()))
+                .Setup(repository => repository.InsertarTiendaAsync(It.IsAny<Tienda>()))
                 .ReturnsAsync(ObtenerTiendaTest(nombreTienda, idTipo, nombreTipo));
 
             _mockTipoRepository
@@ -85,6 +87,40 @@ namespace Domain.UseCase.Tests
             Assert.NotNull(tiendaCreada.Id);
             Assert.Equal("1234", tiendaCreada.Id);
             Assert.Equal(nombreTipo, tiendaCreada.Tipo.Nombre);
+        }
+
+        [Theory]
+        [InlineData("Tienda 1234", 0, "Físico")]
+        [InlineData("Tienda 1234", -1, "Virtual")]
+        public async Task CrearTiendas_Con_IdTipo_Menor_A_Uno_Retorna_Excepcion(string nombreTienda, int idTipo, string nombreTipo)
+        {
+            Tienda nuevaTienda = new TiendaBuilderTest()
+                    .ConNombre(nombreTienda)
+                    .ConTipo(new TipoBuilderTest().ConId(idTipo).Build())
+                    .ConUbicacion(new UbicacionBuilderTest().Build())
+                .Build();
+
+            BusinessException exception =
+                await Assert.ThrowsAsync<BusinessException>(async () => await _tiendaUseCase.CrearTienda(nuevaTienda));
+
+            _mockRepository.VerifyAll();
+
+            _mockTipoRepository.Verify(repository => repository.ObtenerTipoPorIdAsync(It.IsAny<int>()), Times.Never);
+
+            Assert.Equal((int)TipoExcepcionNegocio.TipoInvalido, exception.code);
+        }
+
+        [Fact]
+        public async Task CrearTiendas_Con_Tienda_Nula_Retorna_Excepcion()
+        {
+            BusinessException exception =
+                await Assert.ThrowsAsync<BusinessException>(async () => await _tiendaUseCase.CrearTienda(null));
+
+            _mockRepository.VerifyAll();
+
+            _mockTipoRepository.Verify(repository => repository.ObtenerTipoPorIdAsync(It.IsAny<int>()), Times.Never);
+
+            Assert.Equal((int)TipoExcepcionNegocio.TiendaInvalida, exception.code);
         }
 
         #region Private Methods

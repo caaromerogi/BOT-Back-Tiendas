@@ -1,5 +1,8 @@
-﻿using Domain.Model.Entities;
+﻿using credinet.exception.middleware.models;
+using Domain.Model.Entities;
 using Domain.Model.Entities.Gateway;
+using Helpers.Commons.Exceptions;
+using Helpers.ObjectsUtils.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,11 +35,17 @@ namespace Domain.UseCase.Tiendas
         /// <returns></returns>
         public async Task<Tienda> CrearTienda(Tienda tienda)
         {
+            if (tienda is null)
+                throw new BusinessException(TipoExcepcionNegocio.TiendaInvalida.GetDescription(), (int)TipoExcepcionNegocio.TiendaInvalida);
+
+            if (tienda.Tipo.Id < 1)
+                throw new BusinessException(TipoExcepcionNegocio.TipoInvalido.GetDescription(), (int)TipoExcepcionNegocio.TipoInvalido);
+
             Tipo tipo = await _tipoRepository.ObtenerTipoPorIdAsync(tienda.Tipo.Id);
 
             tienda.EstablecerNombreTipo(tipo);
 
-            return await _tiendaRepository.InsertarAlmacenAsync(tienda);
+            return await _tiendaRepository.InsertarTiendaAsync(tienda);
         }
 
         /// <summary>
