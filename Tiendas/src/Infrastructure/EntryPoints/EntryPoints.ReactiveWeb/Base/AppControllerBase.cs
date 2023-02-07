@@ -1,11 +1,14 @@
 ﻿using credinet.comun.api;
+using credinet.exception.middleware.enums;
 using credinet.exception.middleware.models;
 using Domain.UseCase.Common;
 using Helpers.Commons.Exceptions;
+using Helpers.ObjectsUtils;
 using Helpers.ObjectsUtils.Extensions;
 using Helpers.ObjectsUtils.ResponseObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,20 +21,24 @@ namespace EntryPoints.ReactiveWeb.Base
     /// AppControllerBase
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="BaseController&lt;T&gt;" />
+    /// <seealso cref="BaseController{T}" />
     public class AppControllerBase<T> : BaseController<T>
     {
-        private readonly string country = "co";
-
         private readonly IManageEventsUseCase _eventsService;
+        private readonly ConfiguradorAppSettings _appSettings;
+
+        private string Country => EnvironmentHelper.GetCountryOrDefault(_appSettings.DefaultCountry);
 
         /// <summary>
         /// Creates new instance of <see cref="AppControllerBase{T}"/>
         /// </summary>
         /// <param name="eventsService"></param>
-        public AppControllerBase(IManageEventsUseCase eventsService)
+        /// <param name="appSettings"></param>
+        public AppControllerBase(IManageEventsUseCase eventsService,
+            IOptions<ConfiguradorAppSettings> appSettings)
         {
             _eventsService = eventsService;
+            _appSettings = appSettings.Value;
         }
 
         /// <summary>
@@ -52,7 +59,7 @@ namespace EntryPoints.ReactiveWeb.Base
             try
             {
                 TResult result = await requestHandler();
-                return await ProcesarResultado(Exito(Build(Request.Path.Value, 0, "", country, result)));
+                return await ProcesarResultado(Exito(Build(Request.Path.Value, 0, "", Country, result)));
             }
             catch (BusinessException)
             {
@@ -60,10 +67,8 @@ namespace EntryPoints.ReactiveWeb.Base
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.StackTrace);
-                return BadRequest(new ResponseError(new List<ResponseContent> {
-                    new ResponseContent(ex.Message, $"{(TipoExcepcionNegocio.ExceptionNoControlada.GetDescription(), (int)TipoExcepcionNegocio.ExceptionNoControlada)} - {ex.Message}")
-                }));
+                _eventsService.ConsoleErrorLog(ex.Message, ex);
+                throw new BusinessException(ex.Message, (int)TipoExcepcionNegocio.ExceptionNoControlada);
             }
         }
     }

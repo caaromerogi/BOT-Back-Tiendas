@@ -3,8 +3,10 @@ using Domain.UseCase.Common;
 using Domain.UseCase.Tiendas;
 using EntryPoints.ReactiveWeb.Base;
 using EntryPoints.ReactiveWeb.Entity;
+using Helpers.ObjectsUtils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace EntryPoints.ReactiveWeb.Controllers
@@ -25,8 +27,11 @@ namespace EntryPoints.ReactiveWeb.Controllers
         /// </summary>
         /// <param name="tiendaUseCase">The test negocio.</param>
         /// <param name="eventsService">The logger.</param>
+        /// <param name="appSettings"></param>
         public TiendasController(ITiendaUseCase tiendaUseCase,
-            IManageEventsUseCase eventsService) : base(eventsService)
+            IManageEventsUseCase eventsService,
+            IOptions<ConfiguradorAppSettings> appSettings)
+            : base(eventsService, appSettings)
         {
             _tiendaUseCase = tiendaUseCase;
         }

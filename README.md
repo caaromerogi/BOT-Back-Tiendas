@@ -45,16 +45,3 @@ Para probar la api:
 Les recomiendo usar como IDE para mongo Studio 3t, la version gratuita. Lo poden descargar aqui:
 
 [![Studio 3t](https://signin.studio3t.com/ALL/20220324100420/assets/images/image.jpg)](https://studio3t.com/download/)
-
-<pre>
-
-
-
-
-
-
-
-
-</pre>
-
-🄾🄹🄾 🄲🄾🄽 🄴🄻 🄲🄰🄿🄴🅃🄴 :)

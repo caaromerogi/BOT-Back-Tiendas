@@ -25,11 +25,11 @@ namespace DrivenAdapters.Mongo
         }
 
         /// <summary>
-        /// <see cref="ITiendaRepository.InsertarAlmacenAsync(Tienda)"/>
+        /// <see cref="ITiendaRepository.InsertarTiendaAsync(Tienda)"/>
         /// </summary>
         /// <param name="crearAlmacen"></param>
         /// <returns></returns>
-        public async Task<Tienda> InsertarAlmacenAsync(Tienda crearAlmacen)
+        public async Task<Tienda> InsertarTiendaAsync(Tienda crearAlmacen)
         {
             TiendaEntity nuevaTienda =
                 new(crearAlmacen.Nombre, tipo: new TipoEntity(crearAlmacen.Tipo?.Id ?? 0, crearAlmacen.Tipo?.Nombre),

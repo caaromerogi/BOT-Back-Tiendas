@@ -81,5 +81,29 @@ namespace DrivenAdapters.Mongo.Entities
             Correo = correo;
             FechaCreacion = fechaCreacion;
         }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="nombre"></param>
+        /// <param name="tipo"></param>
+        /// <param name="direccion"></param>
+        /// <param name="ubicacion"></param>
+        /// <param name="celular"></param>
+        /// <param name="correo"></param>
+        /// <param name="fechaCreacion"></param>
+        public TiendaEntity(string id, string nombre, TipoEntity tipo, string direccion, UbicacionEntity ubicacion, string celular,
+            string correo, DateTime fechaCreacion)
+        {
+            Id = id;
+            Nombre = nombre;
+            Tipo = tipo;
+            Direccion = direccion;
+            Ubicacion = ubicacion;
+            Celular = celular;
+            Correo = correo;
+            FechaCreacion = fechaCreacion;
+        }
     }
 }
