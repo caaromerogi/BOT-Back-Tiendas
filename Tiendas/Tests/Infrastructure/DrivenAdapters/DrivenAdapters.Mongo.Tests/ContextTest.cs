@@ -1,5 +1,4 @@
-﻿using DrivenAdapters.Mongo;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Moq;
 using Xunit;
 

@@ -1,8 +1,7 @@
 ﻿using Domain.Model.Entities;
 using Helpers.ObjectsUtils;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace DrivenAdapters.Mongo.Entities
+namespace DrivenAdapter.ServicesBus.Entities
 {
     /// <summary>
     /// Ubicación Entity
@@ -23,13 +22,11 @@ namespace DrivenAdapters.Mongo.Entities
         /// <summary>
         /// Latitud
         /// </summary>
-        [BsonElement("latitud")]
         public decimal Latitud { get; set; }
 
         /// <summary>
         /// Longitud
         /// </summary>
-        [BsonElement("longitud")]
         public decimal Longitud { get; set; }
 
         /// <summary>

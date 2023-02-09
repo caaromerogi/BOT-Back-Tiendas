@@ -39,6 +39,12 @@ namespace Domain.UseCase.Common
         void ConsoleTraceLog(string message);
 
         /// <summary>
+        /// ConsoleDebugLog
+        /// </summary>
+        /// <param name="message"></param>
+        void ConsoleDebugLog(string message);
+
+        /// <summary>
         /// Console information log
         /// </summary>
         /// <param name="message"></param>

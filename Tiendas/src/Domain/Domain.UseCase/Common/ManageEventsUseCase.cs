@@ -64,6 +64,15 @@ namespace Domain.UseCase.Common
         }
 
         /// <summary>
+        /// ConsoleTraceLog
+        /// </summary>
+        /// <param name="message"></param>
+        public void ConsoleDebugLog(string message)
+        {
+            _logger.LogDebug("DEBUG - {message}", message);
+        }
+
+        /// <summary>
         /// <see cref="IManageEventsUseCase.ConsoleInfoLog(string, object[])"/>
         /// </summary>
         /// <param name="message"></param>

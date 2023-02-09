@@ -1,5 +1,6 @@
 ﻿using Domain.Model.Entities;
 using DrivenAdapters.Mongo.Entities.Base;
+using Helpers.ObjectsUtils;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 

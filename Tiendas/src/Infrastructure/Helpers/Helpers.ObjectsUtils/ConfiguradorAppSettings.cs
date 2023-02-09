@@ -38,6 +38,16 @@ namespace Helpers.ObjectsUtils
         public string Database { get; set; }
 
         /// <summary>
+        /// Tópico tiendas.
+        /// </summary>
+        public string TopicoTiendas { get; set; }
+
+        /// <summary>
+        /// Tópico tiendas.
+        /// </summary>
+        public string ColaNotificacionTiendas { get; set; }
+
+        /// <summary>
         /// StorageConnection
         /// </summary>
         public string StorageConnection { get; set; }
