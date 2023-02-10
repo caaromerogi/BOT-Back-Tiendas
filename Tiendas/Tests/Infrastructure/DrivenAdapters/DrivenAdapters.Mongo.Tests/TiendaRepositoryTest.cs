@@ -12,31 +12,31 @@ namespace DrivenAdapters.Mongo.Tests
     {
         private readonly Mock<IContext> _mockContext;
         private readonly Mock<IMongoCollection<TiendaEntity>> _mockCollectionTienda;
-        private readonly Mock<IAsyncCursor<TiendaEntity>> _tipoCursor;
+        private readonly Mock<IAsyncCursor<TiendaEntity>> _tiendaCursor;
 
         public TiendaRepositoryTest()
         {
             _mockContext = new();
             _mockCollectionTienda = new();
-            _tipoCursor = new();
+            _tiendaCursor = new();
 
             _mockCollectionTienda.Object.InsertMany(ObtenerTiendasTest());
 
-            _tipoCursor.SetupSequence(item => item.MoveNext(It.IsAny<CancellationToken>()))
+            _tiendaCursor.SetupSequence(item => item.MoveNext(It.IsAny<CancellationToken>()))
                 .Returns(true).Returns(false);
 
-            _tipoCursor.SetupSequence(item => item.MoveNextAsync(It.IsAny<CancellationToken>()))
+            _tiendaCursor.SetupSequence(item => item.MoveNextAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(true)).Returns(Task.FromResult(false));
         }
 
         [Fact]
         public async Task ObtenerTipoPorId_Exitoso()
         {
-            _tipoCursor.Setup(item => item.Current).Returns(ObtenerTiendasTest);
+            _tiendaCursor.Setup(item => item.Current).Returns(ObtenerTiendasTest);
 
             _mockCollectionTienda.Setup(op => op.FindAsync(It.IsAny<FilterDefinition<TiendaEntity>>(),
                 It.IsAny<FindOptions<TiendaEntity, TiendaEntity>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(_tipoCursor.Object);
+                .ReturnsAsync(_tiendaCursor.Object);
 
             _mockContext.Setup(c => c.Tiendas).Returns(_mockCollectionTienda.Object);
 
@@ -53,7 +53,7 @@ namespace DrivenAdapters.Mongo.Tests
         {
             _mockCollectionTienda.Setup(op => op.FindAsync(It.IsAny<FilterDefinition<TiendaEntity>>(),
                 It.IsAny<FindOptions<TiendaEntity, TiendaEntity>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(_tipoCursor.Object);
+                .ReturnsAsync(_tiendaCursor.Object);
 
             _mockContext.Setup(c => c.Tiendas).Returns(_mockCollectionTienda.Object);
 

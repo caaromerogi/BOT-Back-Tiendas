@@ -11,11 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 using SC.Configuration.Provider.Mongo;
-using Tiendas.AppServices.Extensions;
-using Tiendas.AppServices.Extensions.Health;
 using Serilog;
 using System.IO;
 using System.Linq;
+using Tiendas.AppServices.Extensions;
+using Tiendas.AppServices.Extensions.Health;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +38,7 @@ builder.Services.Configure<ConfiguradorAppSettings>(builder.Configuration.GetReq
 ConfiguradorAppSettings appSettings = builder.Configuration.GetSection(nameof(ConfiguradorAppSettings)).Get<ConfiguradorAppSettings>();
 //HACK: Para usar fuera de Siste.
 //Secrets secrets = builder.Configuration.ResolveSecrets<Secrets>();
-Secrets secrets = builder.Configuration.GetSection(nameof(Secrets)).Get<Secrets>();
+Secrets secretos = builder.Configuration.GetSection(nameof(Secrets)).Get<Secrets>();
 string country = EnvironmentHelper.GetCountryOrDefault(appSettings.DefaultCountry);
 
 builder.Services.AddControllers();
@@ -46,7 +46,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Configuration.AddMongoProvider(
-    nameof(MongoConfigurationProvider), secrets.MongoConnection, country);
+    nameof(MongoConfigurationProvider), secretos.MongoConnection, country);
 
 #region Service Configuration
 
@@ -54,19 +54,17 @@ string policyName = "cors";
 builder.Services
     .RegisterCors(policyName)
     .RegisterAutoMapper()
-    .RegisterMongo(secrets.MongoConnection, $"{appSettings.Database}_{country}")
-    //.RegisterBlobstorage(secrets.StorageConnection, appSettings.StorageContainerName)
-    //.RegisterRedis(secrets.RedisConnection, 0)
+    .RegisterMongo(secretos.MongoConnection, $"{appSettings.Database}_{country}")
+    .RegisterAsyncGateways(secretos.ServicesBusConnection)
     .RegisterServices()
     .AddVersionedApiExplorer()
     .HabilitarVesionamiento()
     .ConfigurarSwaggerConVersiones(builder.Environment, PlatformServices.Default.Application.ApplicationBasePath,
         new string[] { "Tiendas.AppServices.xml" });
-;
 
 builder.Services
     .AddHealthChecks()
-    .AddMongoDb(secrets.MongoConnection, name: "MongoDB");
+    .AddMongoDb(secretos.MongoConnection, name: "MongoDB");
 
 #endregion Service Configuration
 

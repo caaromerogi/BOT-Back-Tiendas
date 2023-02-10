@@ -17,8 +17,13 @@
         public string StorageConnection { get; set; }
 
         /// <summary>
-        /// Retorna o asigna la conexion a redis cache
+        /// Retorna o asigna la conexión a redis cache
         /// </summary>
         public string RedisConnection { get; set; }
+
+        /// <summary>
+        /// Retorna o asigna la conexión a services bus
+        /// </summary>
+        public string ServicesBusConnection { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Domain.UseCase.Tests
         private readonly MockRepository _mockRepository;
 
         private readonly Mock<ITiendaRepository> _mockTiendaRepository;
+        private readonly Mock<ITiendaEventsRepository> _mockTiendaEventsRepository;
         private readonly Mock<ITipoRepository> _mockTipoRepository;
 
         private readonly TiendaUseCase _tiendaUseCase;
@@ -26,8 +27,10 @@ namespace Domain.UseCase.Tests
             _mockTiendaRepository = _mockRepository.Create<ITiendaRepository>();
             //Segunda forma
             _mockTipoRepository = new();
+            _mockTiendaEventsRepository = new();
 
-            _tiendaUseCase = new(_mockTiendaRepository.Object, _mockTipoRepository.Object);
+            _tiendaUseCase = new(_mockTiendaRepository.Object, _mockTipoRepository.Object,
+                _mockTiendaEventsRepository.Object);
         }
 
         [Fact]
@@ -63,6 +66,9 @@ namespace Domain.UseCase.Tests
         [InlineData("Tienda 1234", 2, "Virtual")]
         public async Task CrearTiendasExitoso(string nombreTienda, int idTipo, string nombreTipo)
         {
+            bool notificacionEnviada = false;
+            string idTiendaEsperado = "1234";
+
             Tienda nuevaTienda = new TiendaBuilderTest()
                     .ConNombre(nombreTienda)
                     .ConTipo(new TipoBuilderTest().ConId(idTipo).Build())
@@ -77,22 +83,34 @@ namespace Domain.UseCase.Tests
                 .Setup(repository => repository.ObtenerTipoPorIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(new TipoBuilderTest().ConId(idTipo).ConNombre(nombreTipo).Build());
 
+            _mockTiendaEventsRepository
+                .Setup(repository => repository.NotificarTiendaCreadaAsync(It.IsAny<Tienda>()))
+                .Callback(() => notificacionEnviada = true);
+
+            _mockTiendaEventsRepository
+                .Setup(repository => repository.SolicitarNotificacionEmailTiendaCreadaAsync(It.IsAny<Tienda>()));
+
             Tienda tiendaCreada = await _tiendaUseCase.CrearTienda(nuevaTienda);
+
+            _mockTipoRepository
+                .Verify(repository => repository.ObtenerTipoPorIdAsync(It.IsAny<int>()), Times.Once);
+
+            _mockTiendaEventsRepository
+                .Verify(repository => repository.SolicitarNotificacionEmailTiendaCreadaAsync(It.IsAny<Tienda>()), Times.Once);
 
             _mockRepository.VerifyAll();
 
-            _mockTipoRepository.Verify(repository => repository.ObtenerTipoPorIdAsync(It.IsAny<int>()), Times.Once);
-
             Assert.NotNull(tiendaCreada);
             Assert.NotNull(tiendaCreada.Id);
-            Assert.Equal("1234", tiendaCreada.Id);
+            Assert.True(notificacionEnviada);
+            Assert.Equal(idTiendaEsperado, tiendaCreada.Id);
             Assert.Equal(nombreTipo, tiendaCreada.Tipo.Nombre);
         }
 
         [Theory]
-        [InlineData("Tienda 1234", 0, "Físico")]
-        [InlineData("Tienda 1234", -1, "Virtual")]
-        public async Task CrearTiendas_Con_IdTipo_Menor_A_Uno_Retorna_Excepcion(string nombreTienda, int idTipo, string nombreTipo)
+        [InlineData("Tienda 1234", 0)]
+        [InlineData("Tienda 1234", -1)]
+        public async Task CrearTiendas_Con_IdTipo_Menor_A_Uno_Retorna_Excepcion(string nombreTienda, int idTipo)
         {
             Tienda nuevaTienda = new TiendaBuilderTest()
                     .ConNombre(nombreTienda)

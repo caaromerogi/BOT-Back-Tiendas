@@ -15,17 +15,21 @@ namespace Domain.UseCase.Tiendas
     {
         private readonly ITiendaRepository _tiendaRepository;
         private readonly ITipoRepository _tipoRepository;
+        private readonly ITiendaEventsRepository _tiendaEventsRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TiendaUseCase"/> class.
         /// </summary>
         /// <param name="tiendaRepository">The logger.</param>
         /// <param name="tipoRepository">The logger.</param>
+        /// <param name="tiendaEventsRepository">The logger.</param>
         public TiendaUseCase(ITiendaRepository tiendaRepository,
-            ITipoRepository tipoRepository)
+            ITipoRepository tipoRepository,
+            ITiendaEventsRepository tiendaEventsRepository)
         {
             _tiendaRepository = tiendaRepository;
             _tipoRepository = tipoRepository;
+            _tiendaEventsRepository = tiendaEventsRepository;
         }
 
         /// <summary>
@@ -45,7 +49,13 @@ namespace Domain.UseCase.Tiendas
 
             tienda.EstablecerNombreTipo(tipo);
 
-            return await _tiendaRepository.InsertarTiendaAsync(tienda);
+            Tienda tiendaCreada = await _tiendaRepository.InsertarTiendaAsync(tienda);
+
+            await _tiendaEventsRepository.NotificarTiendaCreadaAsync(tiendaCreada);
+
+            await _tiendaEventsRepository.SolicitarNotificacionEmailTiendaCreadaAsync(tiendaCreada);
+
+            return tiendaCreada;
         }
 
         /// <summary>

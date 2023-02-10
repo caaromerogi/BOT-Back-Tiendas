@@ -1,11 +1,15 @@
 ﻿using AutoMapper.Data;
 using credinet.comun.api;
+using Domain.Model.Entities;
 using Domain.Model.Entities.Gateway;
 using Domain.UseCase.Common;
 using Domain.UseCase.Tiendas;
+using DrivenAdapter.ServicesBus;
+using DrivenAdapter.ServicesBus.Entities;
 using DrivenAdapters.Mongo;
-using DrivenAdapters.Mongo.Entities;
 using Microsoft.Extensions.DependencyInjection;
+using org.reactivecommons.api;
+using org.reactivecommons.api.impl;
 using StackExchange.Redis;
 using System;
 using Tiendas.AppServices.Automapper;
@@ -87,6 +91,7 @@ namespace Tiendas.AppServices.Extensions
 
             services.AddScoped<ITiendaRepository, TiendaRepository>();
             services.AddScoped<ITipoRepository, TipoRepository>();
+            services.AddScoped<ITiendaEventsRepository, TiendaEventsAdapter>();
 
             #endregion Adaptadores
 
@@ -110,5 +115,26 @@ namespace Tiendas.AppServices.Extensions
             {
                 return ConnectionMultiplexer.Connect(connectionString);
             });
+
+        /// <summary>
+        /// RegisterAsyncGateways
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="serviceBusConn"></param>
+        public static IServiceCollection RegisterAsyncGateways(this IServiceCollection services,
+                string serviceBusConn)
+        {
+            services.RegisterAsyncGateway<TiendaEntity>(serviceBusConn);
+            return services;
+        }
+
+        /// <summary>
+        /// Register Gateway
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="serviceBusConn"></param>
+        private static void RegisterAsyncGateway<TEntity>(this IServiceCollection services, string serviceBusConn) =>
+                services.AddSingleton<IDirectAsyncGateway<TEntity>>(new DirectAsyncGatewayServiceBus<TEntity>(serviceBusConn));
     }
 }

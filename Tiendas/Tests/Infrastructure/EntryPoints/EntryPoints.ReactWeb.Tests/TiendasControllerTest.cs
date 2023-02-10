@@ -27,7 +27,7 @@ namespace EntryPoints.ReactWeb.Tests
         private readonly Mock<IManageEventsUseCase> _manageEventsUseCase;
         private readonly Mock<IOptions<ConfiguradorAppSettings>> _appSettings;
 
-        private TiendasController _tiendasController { get; set; }
+        private readonly TiendasController _tiendasController;
 
         public TiendasControllerTest()
         {

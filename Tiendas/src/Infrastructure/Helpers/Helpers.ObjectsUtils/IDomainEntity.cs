@@ -1,4 +1,4 @@
-﻿namespace DrivenAdapters.Mongo.Entities.Base
+﻿namespace Helpers.ObjectsUtils
 {
     /// <summary>
     /// IDomainEntity interface
