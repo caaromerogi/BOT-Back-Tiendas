@@ -43,6 +43,11 @@ namespace Helpers.ObjectsUtils
         public string TopicoTiendas { get; set; }
 
         /// <summary>
+        /// Suscripción Tópico Tiendas
+        /// </summary>
+        public string SubscripcionTopicoTiendas { get; set; }
+
+        /// <summary>
         /// Tópico tiendas.
         /// </summary>
         public string ColaNotificacionTiendas { get; set; }
