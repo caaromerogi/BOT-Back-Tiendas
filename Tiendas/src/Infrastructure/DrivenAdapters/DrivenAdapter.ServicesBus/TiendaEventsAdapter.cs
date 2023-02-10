@@ -6,6 +6,7 @@ using DrivenAdapter.ServicesBus.Entities;
 using Helpers.ObjectsUtils;
 using Microsoft.Extensions.Options;
 using org.reactivecommons.api;
+using org.reactivecommons.api.domain;
 using System.Reflection;
 
 namespace DrivenAdapter.ServicesBus

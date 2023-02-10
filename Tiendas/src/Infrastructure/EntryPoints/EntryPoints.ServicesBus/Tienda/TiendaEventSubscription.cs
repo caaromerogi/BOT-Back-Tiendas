@@ -54,6 +54,7 @@ namespace EntryPoints.ServicesBus.Tienda
         private async Task ProcesarTiendaCreada(DomainEvent<TiendaRequest> tiendaEvent) =>
             await HandleRequestAsync(async (tienda) =>
                 {
+                    //TODO: Aquí se podría llamar un use case si es necesario.
                     await _manageEventsUseCase.ConsoleLogAsync(tiendaEvent.name, tiendaEvent.eventId,
                         tiendaEvent.data, writeData: true);
                 },

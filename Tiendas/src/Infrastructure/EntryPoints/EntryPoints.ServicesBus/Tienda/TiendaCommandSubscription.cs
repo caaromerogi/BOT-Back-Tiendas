@@ -42,13 +42,13 @@ namespace EntryPoints.ServicesBus.Tienda
         {
             await SubscribeOnCommandAsync(_directAsyncGatewayTienda,
                                             _appSettings.Value.ColaNotificacionTiendas,
-                                              NotificarTiendaCreadaAsync,
+                                            NotificarTiendaCreadaAsync,
                                             MethodBase.GetCurrentMethod()!,
                                             maxConcurrentCalls: 1);
         }
 
         /// <summary>
-        ///
+        /// Notificar Tienda Creada
         /// </summary>
         /// <param name="tiendaCommand"></param>
         /// <returns></returns>
